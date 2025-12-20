@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  frontend-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - name: Install dependencies
+        run: cd frontend && bun install
+      - name: Run tests
+        run: cd frontend && bun test
+      - name: Lint check
+        run: cd frontend && bun run biome check .
+
+  backend-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install uv
+        run: pip install uv
+      - name: Install dependencies
+        run: cd backend && uv sync --all-extras
+      - name: Run tests
+        run: cd backend && uv run pytest --cov
+      - name: Lint check
+        run: cd backend && uv run ruff check .
