@@ -1,0 +1,19 @@
+{
+  "name": "my-second-brain",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.10",
+    "@types/bun": "latest",
+    "vitest": "^4.0.16"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "fast-glob": "^3.3.3",
+    "gray-matter": "^4.0.3",
+    "zod": "^4.2.1"
+  }
+}

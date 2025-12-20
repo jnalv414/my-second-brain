@@ -1,0 +1,12 @@
+# My Second Brain - Python Dependencies
+# Minimal dependencies for backlink resolution and utilities
+
+# No external dependencies needed for backlink_resolver.py
+# Uses only Python 3.12+ standard library:
+# - pathlib
+# - re
+# - json
+# - argparse
+
+# Optional: If you want to add frontmatter parsing in the future
+# python-frontmatter==1.1.0
