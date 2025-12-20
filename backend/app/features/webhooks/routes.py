@@ -1,14 +1,14 @@
 """Webhook routes - GitHub webhook endpoint."""
-from fastapi import APIRouter, Request, HTTPException, Header
 import structlog
+from fastapi import APIRouter, Header, HTTPException, Request
 
 from .models import WebhookResponse
 from .service import (
-    verify_github_signature,
-    process_push_event,
-    process_pull_request_event,
     process_issues_event,
     process_ping_event,
+    process_pull_request_event,
+    process_push_event,
+    verify_github_signature,
 )
 
 logger = structlog.get_logger()

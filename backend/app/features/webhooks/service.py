@@ -2,6 +2,7 @@
 import hashlib
 import hmac
 import os
+
 import structlog
 
 logger = structlog.get_logger()

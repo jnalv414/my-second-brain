@@ -1,11 +1,14 @@
 """
 My Second Brain - FastAPI Backend
-Primary: Obsidian vault integration with webhook support
+Primary: Obsidian vault integration with AI agent (Paddy)
 """
-import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+# Register vault tools with agent (side-effect import)
+import app.core.tool_registry  # noqa: F401
+from app.features.chat.routes import router as chat_router
 from app.features.webhooks.routes import router as webhooks_router
 
 app = FastAPI(
@@ -25,6 +28,7 @@ app.add_middleware(
 
 # Include routers
 app.include_router(webhooks_router)
+app.include_router(chat_router)
 
 
 @app.get("/")

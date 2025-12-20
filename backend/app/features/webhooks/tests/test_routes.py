@@ -1,22 +1,41 @@
 """Webhook route tests - TDD first."""
+
 import hashlib
 import hmac
 import json
-import pytest
+
 from fastapi.testclient import TestClient
 
 from app.main import app
 
 client = TestClient(app)
 
+# Test secret for signature generation
+TEST_SECRET = "test-secret"
 
-def create_signature(payload: bytes, secret: str) -> str:
+
+def create_signature(payload: bytes, secret: str = TEST_SECRET) -> str:
     """Create GitHub-style HMAC signature."""
     return "sha256=" + hmac.new(
         secret.encode(),
         payload,
         hashlib.sha256
     ).hexdigest()
+
+
+def post_webhook(payload: dict, event: str, secret: str = TEST_SECRET):
+    """Helper to post webhook with proper signature."""
+    body = json.dumps(payload).encode()
+    signature = create_signature(body, secret)
+    return client.post(
+        "/webhook",
+        content=body,
+        headers={
+            "X-GitHub-Event": event,
+            "X-Hub-Signature-256": signature,
+            "Content-Type": "application/json",
+        },
+    )
 
 
 class TestWebhookEndpoint:
@@ -30,11 +49,7 @@ class TestWebhookEndpoint:
             "repository": {"full_name": "jnalv414/my-second-brain"},
         }
 
-        response = client.post(
-            "/webhook",
-            json=payload,
-            headers={"X-GitHub-Event": "ping"},
-        )
+        response = post_webhook(payload, "ping")
 
         assert response.status_code == 200
         data = response.json()
@@ -50,11 +65,7 @@ class TestWebhookEndpoint:
             "repository": {"full_name": "jnalv414/my-second-brain"},
         }
 
-        response = client.post(
-            "/webhook",
-            json=payload,
-            headers={"X-GitHub-Event": "push"},
-        )
+        response = post_webhook(payload, "push")
 
         assert response.status_code == 200
         data = response.json()
@@ -64,25 +75,44 @@ class TestWebhookEndpoint:
         """Unknown events should be acknowledged but not processed."""
         payload = {"repository": {"full_name": "test/repo"}}
 
-        response = client.post(
-            "/webhook",
-            json=payload,
-            headers={"X-GitHub-Event": "unknown_event"},
-        )
+        response = post_webhook(payload, "unknown_event")
 
         assert response.status_code == 200
         data = response.json()
         assert "acknowledged" in data["message"].lower()
 
-    def test_invalid_json_returns_400(self):
-        """Invalid JSON should return 400."""
+    def test_invalid_signature_returns_401(self, monkeypatch):
+        """Invalid signature should return 401 when secret is configured."""
+        # Set a secret so signature verification is actually performed
+        monkeypatch.setenv("GITHUB_WEBHOOK_SECRET", "real-secret")
+
+        # Reload the module to pick up the env var
+        import app.features.webhooks.service as svc
+
+        monkeypatch.setattr(svc, "WEBHOOK_SECRET", "real-secret")
+
+        payload = {"repository": {"full_name": "test/repo"}}
+        body = json.dumps(payload).encode()
+        # Use wrong signature
         response = client.post(
             "/webhook",
-            content=b"not valid json",
+            content=body,
             headers={
                 "X-GitHub-Event": "push",
+                "X-Hub-Signature-256": "sha256=invalid",
                 "Content-Type": "application/json",
             },
         )
 
-        assert response.status_code == 400
+        assert response.status_code == 401
+
+    def test_missing_signature_returns_401(self):
+        """Missing signature should return 401."""
+        payload = {"repository": {"full_name": "test/repo"}}
+        response = client.post(
+            "/webhook",
+            json=payload,
+            headers={"X-GitHub-Event": "push"},
+        )
+
+        assert response.status_code == 401
