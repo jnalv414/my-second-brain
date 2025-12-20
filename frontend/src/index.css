@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+/* Voxa Design System - Tailwind v4 Theme */
+@theme {
+  /* Brand Colors */
+  --color-primary: #339989;
+  --color-secondary: #7de2d1;
+
+  /* Light Mode Colors */
+  --color-background-light: #f8f9fa;
+  --color-surface-light: #ffffff;
+  --color-text-light: #131515;
+
+  /* Dark Mode Colors */
+  --color-background-dark: #131515;
+  --color-surface-dark: #2b2c28;
+  --color-sidebar-dark: #0c0d0d;
+  --color-text-dark: #fffafb;
+
+  /* shadcn/ui semantic colors */
+  --color-background: #f8f9fa;
+  --color-foreground: #131515;
+  --color-card: #ffffff;
+  --color-card-foreground: #131515;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #131515;
+  --color-primary-foreground: #ffffff;
+  --color-secondary-foreground: #131515;
+  --color-muted: #f3f4f6;
+  --color-muted-foreground: #6b7280;
+  --color-accent: #f3f4f6;
+  --color-accent-foreground: #131515;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+  --color-border: #e5e7eb;
+  --color-input: #e5e7eb;
+  --color-ring: #339989;
+
+  /* Gray scale */
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+
+  /* Font Family */
+  --font-sans: "Inter", sans-serif;
+
+  /* Border Radius */
+  --radius-default: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
+}
+
+/* Dark mode overrides */
+.dark {
+  --color-background: #131515;
+  --color-foreground: #fffafb;
+  --color-card: #2b2c28;
+  --color-card-foreground: #fffafb;
+  --color-popover: #2b2c28;
+  --color-popover-foreground: #fffafb;
+  --color-muted: #2b2c28;
+  --color-muted-foreground: #9ca3af;
+  --color-accent: #2b2c28;
+  --color-accent-foreground: #fffafb;
+  --color-border: #374151;
+  --color-input: #2b2c28;
+}
+
+/* Custom Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2b2c28;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #339989;
+}
+
+/* Selection Styling */
+::selection {
+  background-color: #339989;
+  color: white;
+}
+
+/* Fade in up animation */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.3s ease-out;
+}
+
+/* Base layer */
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+}

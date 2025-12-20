@@ -3,36 +3,38 @@
  * Only extracted here after 3+ features need them (three-feature extraction rule).
  */
 
-import { z } from "zod";
+import { z } from 'zod'
 
 /**
  * Note frontmatter schema
  */
-export const FrontmatterSchema = z.object({
-  tags: z.array(z.string()).optional().default([]),
-  created: z.string().or(z.date()).optional(),
-  modified: z.string().or(z.date()).optional(),
-  title: z.string().optional(),
-  aliases: z.array(z.string()).optional().default([]),
-  // Allow any additional custom fields
-}).passthrough();
+export const FrontmatterSchema = z
+  .object({
+    tags: z.array(z.string()).optional().default([]),
+    created: z.string().or(z.date()).optional(),
+    modified: z.string().or(z.date()).optional(),
+    title: z.string().optional(),
+    aliases: z.array(z.string()).optional().default([]),
+    // Allow any additional custom fields
+  })
+  .passthrough()
 
-export type Frontmatter = z.infer<typeof FrontmatterSchema>;
+export type Frontmatter = z.infer<typeof FrontmatterSchema>
 
 /**
  * Complete note structure
  */
 export interface Note {
   /** Relative path from vault root (e.g., "Projects/note.md") */
-  path: string;
+  path: string
   /** Note title (from frontmatter or filename) */
-  title: string;
+  title: string
   /** Markdown content without frontmatter */
-  content: string;
+  content: string
   /** Parsed frontmatter metadata */
-  frontmatter: Frontmatter;
+  frontmatter: Frontmatter
   /** Last modified timestamp */
-  modified: Date;
+  modified: Date
 }
 
 /**
@@ -40,13 +42,13 @@ export interface Note {
  */
 export interface Wikilink {
   /** Original link text: [[Note Name#Heading|Alias]] */
-  raw: string;
+  raw: string
   /** Target note name: "Note Name" */
-  target: string;
+  target: string
   /** Optional heading: "Heading" */
-  heading?: string;
+  heading?: string
   /** Optional alias: "Alias" */
-  alias?: string;
+  alias?: string
 }
 
 /**
@@ -54,13 +56,13 @@ export interface Wikilink {
  */
 export interface Backlink {
   /** Source note name that contains the link */
-  source: string;
+  source: string
   /** Source note path */
-  sourcePath: string;
+  sourcePath: string
   /** Target note name being linked to */
-  target: string;
+  target: string
   /** Surrounding text context */
-  context?: string;
+  context?: string
 }
 
 /**
@@ -68,11 +70,11 @@ export interface Backlink {
  */
 export interface SearchResult {
   /** Note that matches the search */
-  note: Note;
+  note: Note
   /** Relevance score (0-1) */
-  score: number;
+  score: number
   /** Matching excerpts with highlights */
-  excerpts?: string[];
+  excerpts?: string[]
 }
 
 /**
@@ -80,7 +82,7 @@ export interface SearchResult {
  */
 export interface VaultConfig {
   /** Absolute path to Obsidian vault root */
-  vaultPath: string;
+  vaultPath: string
   /** Optional Paddy API URL for semantic search */
-  paddyUrl?: string;
+  paddyUrl?: string
 }
