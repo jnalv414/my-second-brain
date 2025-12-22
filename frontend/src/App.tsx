@@ -1,36 +1,33 @@
-import { useState } from 'react'
-import { ChatLayout, Sidebar } from '@/components/layout'
-import { useChat } from '@/hooks/use-chat'
-import { useTheme } from '@/hooks/use-theme'
+import { useEffect, useState } from "react";
+import { checkHealth } from "./api/client";
+import { Chat } from "./components/Chat";
+import { Header } from "./components/Header";
+import { Sidebar } from "./components/Sidebar";
 
-export default function App() {
-  const { theme } = useTheme()
-  const { messages, isLoading, sendMessage } = useChat()
-  const [activeNav, setActiveNav] = useState('chats')
+export function App() {
+	const [isConnected, setIsConnected] = useState<boolean | null>(null);
+	const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  // Apply dark class to html element
-  if (typeof document !== 'undefined') {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
-  }
+	useEffect(() => {
+		checkHealth()
+			.then(() => setIsConnected(true))
+			.catch(() => setIsConnected(false));
+	}, []);
 
-  return (
-    <div className="h-screen flex overflow-hidden antialiased selection:bg-primary selection:text-white dark">
-      <Sidebar
-        userName="John Smith"
-        userPlan="Free Plan"
-        activeItem={activeNav}
-        onNavigate={setActiveNav}
-      />
-      <ChatLayout
-        messages={messages}
-        isLoading={isLoading}
-        onSendMessage={sendMessage}
-        credits={{ used: 6, total: 75 }}
-      />
-    </div>
-  )
+	return (
+		<div className="flex h-screen flex-col bg-[var(--bg-primary)]">
+			<Header
+				isConnected={isConnected}
+				onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+			/>
+
+			<div className="flex flex-1 overflow-hidden">
+				{sidebarOpen && <Sidebar />}
+
+				<main className="flex flex-1 flex-col overflow-hidden">
+					<Chat />
+				</main>
+			</div>
+		</div>
+	);
 }

@@ -109,7 +109,7 @@ cd frontend && bun test       # Frontend tests
 ## Key Types
 
 | Type | Purpose |
-|------|---------|
+|------|--------|
 | `Note` | Complete note with path, title, content, frontmatter |
 | `AgentDeps` | Dependency injection for vault_agent tools |
 | `VaultManager` | Obsidian vault operations |
