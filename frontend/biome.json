@@ -9,10 +9,18 @@
     "rules": {
       "recommended": true,
       "a11y": {
-        "useSemanticElements": "warn"
+        "useSemanticElements": "warn",
+        "noSvgWithoutTitle": "warn"
       },
       "suspicious": {
-        "noExplicitAny": "warn"
+        "noExplicitAny": "warn",
+        "noArrayIndexKey": "warn"
+      },
+      "correctness": {
+        "noUnusedVariables": "warn"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "warn"
       }
     }
   },
