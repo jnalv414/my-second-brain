@@ -17,12 +17,14 @@
 	},
 	"dependencies": {
 		"@radix-ui/react-slot": "^1.1.0",
+		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.1.0",
 		"fast-glob": "^3.3.3",
 		"gray-matter": "^4.0.3",
 		"lucide-react": "^0.460.0",
 		"react": "^19.1.0",
 		"react-dom": "^19.1.0",
+		"tailwind-merge": "^2.5.0",
 		"zod": "^4.2.1"
 	},
 	"devDependencies": {
