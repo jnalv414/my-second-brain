@@ -16,8 +16,11 @@
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
+		"@radix-ui/react-slot": "^1.1.0",
+		"clsx": "^2.1.0",
 		"fast-glob": "^3.3.3",
 		"gray-matter": "^4.0.3",
+		"lucide-react": "^0.460.0",
 		"react": "^19.1.0",
 		"react-dom": "^19.1.0",
 		"zod": "^4.2.1"
@@ -28,6 +31,7 @@
 		"@testing-library/dom": "^10.0.0",
 		"@testing-library/jest-dom": "^6.6.0",
 		"@testing-library/react": "^16.0.0",
+		"@testing-library/user-event": "^14.5.0",
 		"@types/bun": "latest",
 		"happy-dom": "^15.0.0",
 		"@types/react": "^19.1.8",
