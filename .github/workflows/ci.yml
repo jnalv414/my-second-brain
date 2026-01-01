@@ -15,7 +15,7 @@ jobs:
       - name: Install dependencies
         run: cd frontend && bun install
       - name: Run tests
-        run: cd frontend && bun test
+        run: cd frontend && bun run test
       - name: Lint check
         run: cd frontend && bun run biome check .
 
